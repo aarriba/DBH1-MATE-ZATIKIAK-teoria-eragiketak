@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zatikiak: Eragiketak - DBH 1</title>
+    <style>
+        :root {
+            --primary: #2b6cb0;
+            --primary-light: #ebf8ff;
+            --secondary: #319795;
+            --success: #38a169;
+            --error: #e53e3e;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #edf2f7;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Pestañen sistema */
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: #edf2f7;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+            background: white;
+            margin-bottom: -2px;
+        }
+
+        /* Edukiak */
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+
+        /* Zatikiak HTML bitartez */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 0 5px;
+        }
+
+        .num {
+            border-bottom: 2px solid var(--dark);
+            padding-bottom: 2px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .den {
+            padding-top: 2px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .operator {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        /* Txartelak */
+        .step-card {
+            background: var(--light);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-card strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Ariketa interaktiboak */
+        .quiz-box {
+            margin-top: 30px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            background: #fffdf5;
+        }
+
+        .quiz-box h3 {
+            color: #b7791f;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-interface {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .quiz-input {
+            width: 55px;
+            padding: 6px;
+            text-align: center;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .quiz-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn-check:hover {
+            background: #2b6cb0;
+        }
+
+        .btn-random {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn-random:hover {
+            background: #2d3748;
+        }
+
+        .feedback {
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+            background: #f0fff4;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+            background: #fff5f5;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Zatikiak: Eragiketak</h1>
+        <p>Zatikien arteko batuketak, kenketak, biderketak eta zatiketak - DBH 1</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'suma')">Batuketa</button>
+        <button class="tab-btn" onclick="openTab(event, 'resta')">Kenketa</button>
+        <button class="tab-btn" onclick="openTab(event, 'multi')">Biderketa</button>
+        <button class="tab-btn" onclick="openTab(event, 'divi')">Zatiketa</button>
+    </nav>
+
+    <div id="suma" class="tab-content active">
+        <h2>Zatikien Batuketa</h2>
+        <p style="margin-bottom: 20px;">Zatikiak gehitzeko bi egoera ezberdinekin egin dezakegu topo. Begiratu ondo izendatzaileei!</p>
+        
+        <div class="step-card">
+            <strong>1. Izendatzaile bera badute:</strong>
+            <p>Zenbakitzaileak batu egiten dira eta izendatzailea berdin-berdin uzten da.</p>
+            <div style="margin-top: 10px;">
+                <div class="fraction"><span class="num">3</span><span class="den">7</span></div>
+                <span class="operator">+</span>
+                <div class="fraction"><span class="num">2</span><span class="den">7</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">3 + 2</span><span class="den">7</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">5</span><span class="den">7</span></div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <strong>2. Izendatzaile ezberdina badute:</strong>
+            <p>Lehenik, zatikiak izendatzaile kideko bihurtu behar ditugu, horretarako izendatzaileen <strong>m.k.t. (multiplo komun txikiena)</strong> kalkulatuz. Ondoren, zenbakitzaile berriak batuko ditugu.</p>
+            <div style="margin-top: 10px;">
+                <div class="fraction"><span class="num">1</span><span class="den">4</span></div>
+                <span class="operator">+</span>
+                <div class="fraction"><span class="num">2</span><span class="den">3</span></div>
+                <span class="operator">&rarr;</span>
+                <span style="font-size:0.9rem; color: #555; font-weight: bold;">m.k.t.(4, 3) = 12</span>
+                <span class="operator">&rarr;</span>
+                <div class="fraction"><span class="num">3</span><span class="den">12</span></div>
+                <span class="operator">+</span>
+                <div class="fraction"><span class="num">8</span><span class="den">12</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">11</span><span class="den">12</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3>Saiatu zaitez:</h3>
+            <p style="margin-bottom: 10px; color: #4a5568;">Kontuz! Izendatzaileak ezberdinak dira. Kalkulatu lehenik <strong>m.k.t.</strong> zatiki kidekoak lortzeko:</p>
+            <div class="quiz-interface">
+                <div class="fraction"><span class="num" id="q-sum-n1">1</span><span class="den" id="q-sum-d1">4</span></div>
+                <span class="operator">+</span>
+                <div class="fraction"><span class="num" id="q-sum-n2">2</span><span class="den" id="q-sum-d2">3</span></div>
+                <span class="operator">=</span>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <input type="number" id="sum-num" class="quiz-input" placeholder="Zenb">
+                    <hr style="border: 1px solid var(--dark)">
+                    <input type="number" id="sum-den" class="quiz-input" placeholder="Izen">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-check" onclick="checkQuiz('sum')">Egiaztatu</button>
+                    <button class="btn-random" onclick="generateQuiz('sum')">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="sum-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <div id="resta" class="tab-content">
+        <h2>Zatikien Kenketa</h2>
+        <p style="margin-bottom: 20px;">Kenketak batuketaren pauso berdinak jarraitzen ditu, baina izendatzaileak ezberdinak badira, **m.k.t.** bilatuko dugu lehenik.</p>
+        
+        <div class="step-card">
+            <strong>Izendatzaile ezberdinak dituzten kenketa adibidea:</strong>
+            <p>Izendatzaileen multiplo komun txikiena bilatuko dugu zatiki kidekoak lortzeko, eta gero zenbakitzaile berriak kenduko ditugu.</p>
+            <div style="margin-top: 10px;">
+                <div class="fraction"><span class="num">3</span><span class="den">4</span></div>
+                <span class="operator">-</span>
+                <div class="fraction"><span class="num">1</span><span class="den">6</span></div>
+                <span class="operator">&rarr;</span>
+                <span style="font-size:0.9rem; color: #555; font-weight: bold;">m.k.t.(4, 6) = 12</span>
+                <span class="operator">&rarr;</span>
+                <div class="fraction"><span class="num">9</span><span class="den">12</span></div>
+                <span class="operator">-</span>
+                <div class="fraction"><span class="num">2</span><span class="den">12</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">7</span><span class="den">12</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3>Saiatu zaitez:</h3>
+            <p style="margin-bottom: 10px; color: #4a5568;">Kalkulatu izendatzaileen <strong>m.k.t.</strong> eta ebatzi ondorengo kenketa:</p>
+            <div class="quiz-interface">
+                <div class="fraction"><span class="num" id="q-res-n1">5</span><span class="den" id="q-res-d1">6</span></div>
+                <span class="operator">-</span>
+                <div class="fraction"><span class="num" id="q-res-n2">1</span><span class="den" id="q-res-d2">4</span></div>
+                <span class="operator">=</span>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <input type="number" id="res-num" class="quiz-input">
+                    <hr style="border: 1px solid var(--dark)">
+                    <input type="number" id="res-den" class="quiz-input">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-check" onclick="checkQuiz('res')">Egiaztatu</button>
+                    <button class="btn-random" onclick="generateQuiz('res')">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="res-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <div id="multi" class="tab-content">
+        <h2>Zatikien Biderketa</h2>
+        <p style="margin-bottom: 20px;">Zatikiak biderkatzeko ez du axola izendatzaileak berdinak ala ezberdinak diren. Beti zuzenean biderkatzen dira (lerroan).</p>
+        
+        <div class="step-card">
+            <strong>Zuzenean biderkatu (Lerroan):</strong>
+            <p>Zenbakitzailea bider zenbakitzailea egiten da, eta izendatzailea bider izendatzailea.</p>
+            <div style="margin-top: 15px;">
+                <div class="fraction"><span class="num">2</span><span class="den">3</span></div>
+                <span class="operator">&middot;</span>
+                <div class="fraction"><span class="num">4</span><span class="den">5</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">2 &middot; 4</span><span class="den">3 &middot; 5</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">8</span><span class="den">15</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3>Saiatu zaitez:</h3>
+            <p style="margin-bottom: 10px;">Kalkulatu bi zatiki hauen arteko biderketa:</p>
+            <div class="quiz-interface">
+                <div class="fraction"><span class="num" id="q-mul-n1">3</span><span class="den" id="q-mul-d1">4</span></div>
+                <span class="operator">&middot;</span>
+                <div class="fraction"><span class="num" id="q-mul-n2">1</span><span class="den" id="q-mul-d2">5</span></div>
+                <span class="operator">=</span>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <input type="number" id="mul-num" class="quiz-input">
+                    <hr style="border: 1px solid var(--dark)">
+                    <input type="number" id="mul-den" class="quiz-input">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-check" onclick="checkQuiz('mul')">Egiaztatu</button>
+                    <button class="btn-random" onclick="generateQuiz('mul')">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="mul-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <div id="divi" class="tab-content">
+        <h2>Zatikien Zatiketa</h2>
+        <p style="margin-bottom: 20px;">Bi zatiki zatitzea, lehenengo zatikia bigarrenaren <strong>alderantzizko zatikiarekin (inbertsoarekin) biderkatzea</strong> da. Eragiketa biderketa bihurtzen da!</p>
+        
+        <div class="step-card">
+            <strong>Alderantzizko zatikiarekin biderkatu:</strong>
+            <p>1. Zatiketa ikurra <span style="font-weight: bold; color: var(--primary);">(:)</span> biderketa ikur <span style="font-weight: bold; color: var(--primary);">&middot;</span> bihurtzen dugu.</p>
+            <p>2. Bigarren zatikiari itzulia ematen diogu (zenbakitzailea behera doa eta izendatzailea gora).</p>
+            <p>3. Lerroan biderkatzen dugu, beti bezala.</p>
+            
+            <div style="margin-top: 15px;">
+                <p>Adibidea:</p>
+                <div class="fraction"><span class="num">3</span><span class="den">5</span></div>
+                <span class="operator">:</span>
+                <div class="fraction"><span class="num">2</span><span class="den">7</span></div>
+                <span class="operator">&rarr;</span>
+                <span style="font-size: 0.9rem; font-weight: bold; color: #555;">(Alderantzizkatu)</span>
+                <span class="operator">&rarr;</span>
+                <div class="fraction"><span class="num">3</span><span class="den">5</span></div>
+                <span class="operator">&middot;</span>
+                <div class="fraction"><span class="num">7</span><span class="den">2</span></div>
+                <span class="operator">=</span>
+                <div class="fraction"><span class="num">21</span><span class="den">10</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3>Saiatu zaitez:</h3>
+            <p style="margin-bottom: 10px;">Ebatzi zatiketa hau, biderketa inbertso bihurtuz:</p>
+            <div class="quiz-interface">
+                <div class="fraction"><span class="num" id="q-div-n1">1</span><span class="den" id="q-div-d1">3</span></div>
+                <span class="operator">:</span>
+                <div class="fraction"><span class="num" id="q-div-n2">2</span><span class="den" id="q-div-d2">5</span></div>
+                <span class="operator">=</span>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <input type="number" id="div-num" class="quiz-input">
+                    <hr style="border: 1px solid var(--dark)">
+                    <input type="number" id="div-den" class="quiz-input">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-check" onclick="checkQuiz('div')">Egiaztatu</button>
+                    <button class="btn-random" onclick="generateQuiz('div')">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="div-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Matematika Baliabideak - DBH 1</p>
+    </footer>
+</div>
+
+<script>
+    // Memoria inicial de las respuestas correctas
+    let currentSolutions = {
+        sum: { num: 11, den: 12 },
+        res: { num: 7, den: 12 },
+        mul: { num: 3, den: 20 },
+        div: { num: 5, den: 6 }
+    };
+
+    // Zatitzaile komun handiena kalkulatzeko funtzio laguntzailea (m.c.d.)
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    // Multiplo komun txikiena kalkulatzeko funtzioa (m.k.t.)
+    function lcm(a, b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    // Pestañen aldaketa
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Ariketa sortzaile aleatorio eta dinamikoa
+    function generateQuiz(type) {
+        document.getElementById(`${type}-num`).value = '';
+        document.getElementById(`${type}-den`).value = '';
+        let feedbackDiv = document.getElementById(`${type}-feedback`);
+        feedbackDiv.style.display = 'none';
+
+        // Oinarrizko izendatzaile multzo aproposak DBH 1erako (2, 3, 4, 5, 6)
+        const commonDens = [2, 3, 4, 5, 6];
+        
+        let d1 = commonDens[Math.floor(Math.random() * commonDens.length)];
+        let d2 = commonDens[Math.floor(Math.random() * commonDens.length)];
+        
+        // Suma eta kenketetan izendatzaileak ezberdinak izatea ziurtatu, m.k.t. landu dezaten
+        if (type === 'sum' || type === 'res') {
+            while (d1 === d2) {
+                d2 = commonDens[Math.floor(Math.random() * commonDens.length)];
+            }
+        }
+
+        let n1 = Math.floor(Math.random() * 4) + 1; // Zenbakitzaile txikiak erraztasunagatik
+        let n2 = Math.floor(Math.random() * 4) + 1;
+
+        if (type === 'sum') {
+            document.getElementById('q-sum-n1').innerText = n1;
+            document.getElementById('q-sum-d1').innerText = d1;
+            document.getElementById('q-sum-n2').innerText = n2;
+            document.getElementById('q-sum-d2').innerText = d2;
+
+            let commonDen = lcm(d1, d2);
+            let finalNum = (n1 * (commonDen / d1)) + (n2 * (commonDen / d2));
+            
+            currentSolutions.sum.num = finalNum;
+            currentSolutions.sum.den = commonDen;
+        } 
+        else if (type === 'res') {
+            // Emaitza negatiboak ekiditeko DBH 1 hasieran: ziurtatu zatiki 1 > zatiki 2 dela
+            let commonDen = lcm(d1, d2);
+            let tempNum1 = n1 * (commonDen / d1);
+            let tempNum2 = n2 * (commonDen / d2);
+            
+            if (tempNum1 <= tempNum2) {
+                n1 = n2 + 2; // Lehenengo zenbakitzailea handitu balio positiboa bermatzeko
+                tempNum1 = n1 * (commonDen / d1);
+            }
+
+            document.getElementById('q-res-n1').innerText = n1;
+            document.getElementById('q-res-d1').innerText = d1;
+            document.getElementById('q-res-n2').innerText = n2;
+            document.getElementById('q-res-d2').innerText = d2;
+
+            currentSolutions.res.num = tempNum1 - tempNum2;
+            currentSolutions.res.den = commonDen;
+        } 
+        else if (type === 'mul') {
+            document.getElementById('q-mul-n1').innerText = n1;
+            document.getElementById('q-mul-d1').innerText = d1;
+            document.getElementById('q-mul-n2').innerText = n2;
+            document.getElementById('q-mul-d2').innerText = d2;
+            currentSolutions.mul.num = n1 * n2;
+            currentSolutions.mul.den = d1 * d2;
+        } 
+        else if (type === 'div') {
+            document.getElementById('q-div-n1').innerText = n1;
+            document.getElementById('q-div-d1').innerText = d1;
+            document.getElementById('q-div-n2').innerText = n2;
+            document.getElementById('q-div-d2').innerText = d2;
+            
+            // Alderantzizko biderketa aplikatuz: (n1 * d2) / (d1 * n2)
+            currentSolutions.div.num = n1 * d2;
+            currentSolutions.div.den = d1 * n2;
+        }
+    }
+
+    // Egiaztapen mekanismoa
+    function checkQuiz(type) {
+        let numInput = document.getElementById(`${type}-num`).value;
+        let denInput = document.getElementById(`${type}-den`).value;
+        let feedbackDiv = document.getElementById(`${type}-feedback`);
+
+        if (!numInput || !denInput) {
+            feedbackDiv.innerHTML = "Mesedez, bete zenbakitzailea eta izendatzailea egiaztatu aurretik.";
+            feedbackDiv.className = "feedback incorrect";
+            return;
+        }
+
+        let expectedNum = currentSolutions[type].num;
+        let expectedDen = currentSolutions[type].den;
+
+        // Ikasleak zatiki laburtua ala m.k.t zuzenaren bidezko zatikia jarri duen aztertu
+        let userGcd = gcd(parseInt(numInput), parseInt(denInput));
+        let expectedGcd = gcd(expectedNum, expectedDen);
+
+        let userReducedNum = numInput / userGcd;
+        let userReducedDen = denInput / userGcd;
+        let expectedReducedNum = expectedNum / expectedGcd;
+        let expectedReducedDen = expectedDen / expectedGcd;
+
+        // Egiaztatu emaitza matematiko baliokidea den (m.k.t bidezkoa zein zatiki sinplifikatua onartzen ditu)
+        if ((numInput == expectedNum && denInput == expectedDen) || 
+            (userReducedNum === expectedReducedNum && userReducedDen === expectedReducedDen)) {
+            feedbackDiv.innerHTML = `¡Oso ondo! Emaitza zuzena da. Lortu duzu! (Zatiki kideko zuzena: ${expectedNum}/${expectedDen})`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `Saiatu berriro. Gogoratu araua eta m.k.t-a ondo kalkulatu duzula ziurtatu. (Ustezko emaitza: ${expectedNum}/${expectedDen})`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+</script>
+
+</body>
+</html>
