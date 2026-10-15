@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="doc-title">Zatikiak: Eragiketak - DBH 1 / Fracciones: Operaciones - 1º ESO</title>
+    <title id="doc-title">Zatikiak: Eragiketak eta Irudikapena - DBH 1</title>
     <style>
         :root {
             --primary: #2b6cb0;
@@ -30,7 +30,7 @@
             padding: 10px 20px 20px 20px;
         }
 
-        /* Mensaje obligatorio de autoría y revisión */
+        /* Banner de aviso superior obligatorio */
         .disclaimer-banner {
             background-color: #fffaf0;
             border: 1px solid #feebc8;
@@ -62,16 +62,16 @@
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 5px;
+            font-weight: 700;
         }
 
         header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
-        /* Botón de alternancia de idioma */
         .lang-switch {
             position: absolute;
             top: 15px;
@@ -79,7 +79,7 @@
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid white;
             color: white;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
@@ -92,7 +92,7 @@
             color: var(--primary);
         }
 
-        /* Pestañas */
+        /* Navegación por pestañas */
         .tabs {
             display: flex;
             background: var(--light);
@@ -102,10 +102,10 @@
 
         .tab-btn {
             flex: 1;
-            padding: 15px 20px;
+            padding: 15px 18px;
             border: none;
             background: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #4a5568;
             cursor: pointer;
@@ -126,7 +126,6 @@
             margin-bottom: -2px;
         }
 
-        /* Contenido de pestañas */
         .tab-content {
             display: none;
             padding: 30px;
@@ -143,7 +142,7 @@
             padding-bottom: 8px;
         }
 
-        /* Fracciones en HTML */
+        /* Formato visual de fracciones */
         .fraction {
             display: inline-flex;
             flex-direction: column;
@@ -173,7 +172,6 @@
             margin: 0 10px;
         }
 
-        /* Tarjetas explicativas */
         .step-card {
             background: var(--light);
             border-left: 4px solid var(--secondary);
@@ -188,7 +186,55 @@
             margin-bottom: 5px;
         }
 
-        /* Ejercicios interactivos */
+        /* Laboratorio de representación interactiva */
+        .interactive-builder {
+            background: #f0fff4;
+            border: 2px solid #c6f6d5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .controls input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .fraction-display-svg {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .shape-container {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border: 2px solid var(--dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Zona de cuestionarios */
         .quiz-box {
             margin-top: 30px;
             border: 2px dashed var(--border);
@@ -292,27 +338,67 @@
 </head>
 <body>
 
-<!-- Mensaje global de autoría y revisión -->
-<div class="disclaimer-banner">
-    Aplicación creada por a.arriba@irakasle.ehu.eus con la ayuda de una IA para generar el código (última revisión el 16 de octubre de 2026). Esta herramienta puede tener fallos, así que todas las sugerencias o correcciones se atenderán por dicho correo electrónico.
+<!-- Mensaje global interactivo de autoría y revisión -->
+<div class="disclaimer-banner" id="disclaimer-text">
+    Aplikazioa a.arriba@irakasle.ehu.eus-ek sortu du AA baten laguntzaz kodea sortzeko (azken berrikuspena: 2026ko urriaren 16an). Tresna honek akatsak izan ditzake, beraz, iradokizun edo zuzenketa guztiak posta elektroniko horren bidez bideratuko dira.
 </div>
 
 <div class="container">
     <header>
         <button class="lang-switch" onclick="toggleLanguage()" id="lang-btn">🌐 Español</button>
-        <h1 id="app-title">Zatikiak: Eragiketak</h1>
-        <p id="app-subtitle">Zatikien arteko batuketak, kenketak, biderketak eta zatiketak - DBH 1</p>
+        <h1 id="app-title">Zatikiak: Eragiketak eta Irudikapena</h1>
+        <p id="app-subtitle">Zatikiak irudikatu, batu, kendu, biderkatu eta zatitu - DBH 1</p>
     </header>
 
     <nav class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'suma')" id="tab-sum-btn">Batuketa</button>
+        <button class="tab-btn active" onclick="openTab(event, 'repr')" id="tab-repr-btn">Irudikapena</button>
+        <button class="tab-btn" onclick="openTab(event, 'suma')" id="tab-sum-btn">Batuketa</button>
         <button class="tab-btn" onclick="openTab(event, 'resta')" id="tab-res-btn">Kenketa</button>
         <button class="tab-btn" onclick="openTab(event, 'multi')" id="tab-mul-btn">Biderketa</button>
         <button class="tab-btn" onclick="openTab(event, 'divi')" id="tab-div-btn">Zatiketa</button>
     </nav>
 
+    <!-- REPRESENTACIÓN / IRUDIKAPENA -->
+    <div id="repr" class="tab-content active">
+        <h2 id="repr-title">Zatikiak Irudikatu</h2>
+        <p id="repr-intro" style="margin-bottom: 20px;">Zatiki batek oso baten zati berdinesgarriak adierazten ditu. <strong>Izendatzaileak</strong> osoa zenbat zatitan banatzen den esaten digu, eta <strong>zenbakitzaileak</strong> zenbat zati hartzen ditugun.</p>
+
+        <div class="interactive-builder">
+            <h3 id="repr-builder-title" style="color: var(--secondary);">Probatzaile Interaktiboa</h3>
+            <div class="controls">
+                <label id="lbl-num">Zenbakitzailea:</label>
+                <input type="number" id="builder-num" value="3" min="1" max="12" onchange="updateCustomRepresentation()">
+                <label id="lbl-den">Izendatzailea:</label>
+                <input type="number" id="builder-den" value="4" min="1" max="12" onchange="updateCustomRepresentation()">
+            </div>
+            <div class="fraction-display-svg">
+                <div id="rect-shape-container" class="shape-container"></div>
+                <div id="circle-shape-container" class="shape-container"></div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3 id="repr-quiz-title">Saiatu zaitez:</h3>
+            <p id="repr-quiz-desc" style="margin-bottom: 10px;">Zein zatiki ordezkatzen du ondorengo irudiak?</p>
+            <div class="quiz-interface">
+                <div id="quiz-shape-container" class="shape-container" style="width: 140px; height: 140px;"></div>
+                <span class="operator">=</span>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <input type="number" id="repr-num" class="quiz-input" placeholder="Zenb">
+                    <hr style="border: 1px solid var(--dark)">
+                    <input type="number" id="repr-den" class="quiz-input" placeholder="Izen">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-check" onclick="checkQuiz('repr')" id="btn-repr-check">Egiaztatu</button>
+                    <button class="btn-random" onclick="generateQuiz('repr')" id="btn-repr-rand">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="repr-feedback" class="feedback"></div>
+        </div>
+    </div>
+
     <!-- BATUKETA / SUMA -->
-    <div id="suma" class="tab-content active">
+    <div id="suma" class="tab-content">
         <h2 id="sum-title">Zatikien Batuketa</h2>
         <p id="sum-intro" style="margin-bottom: 20px;">Zatikiak gehitzeko bi egoera ezberdinekin egin dezakegu topo. Begiratu ondo izendatzaileei!</p>
         
@@ -498,4 +584,446 @@
                 </div>
                 <div class="btn-group">
                     <button class="btn-check" onclick="checkQuiz('div')" id="btn-div-check">Egiaztatu</button>
-                    <button class="btn-random" onclick="generateQuiz('div')" id="btn-div-rand">Aldatu zenbakiak</button
+                    <button class="btn-random" onclick="generateQuiz('div')" id="btn-div-rand">Aldatu zenbakiak</button>
+                </div>
+            </div>
+            <div id="div-feedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footer-text">&copy; 2026 Matematika Baliabideak - DBH 1</p>
+    </footer>
+</div>
+
+<script>
+    let currentLang = 'eu';
+
+    const translations = {
+        eu: {
+            disclaimer: 'Aplikazioa a.arriba@irakasle.ehu.eus-ek sortu du AA baten laguntzaz kodea sortzeko (azken berrikuspena: 2026ko urriaren 16an). Tresna honek akatsak izan ditzake, beraz, iradokizun edo zuzenketa guztiak posta elektroniko horren bidez bideratuko dira.',
+            langBtn: '🌐 Español',
+            appTitle: 'Zatikiak: Eragiketak eta Irudikapena',
+            appSubtitle: 'Zatikiak irudikatu, batu, kendu, biderkatu eta zatitu - DBH 1',
+            tabRepr: 'Irudikapena',
+            tabSum: 'Batuketa',
+            tabRes: 'Kenketa',
+            tabMul: 'Biderketa',
+            tabDiv: 'Zatiketa',
+            
+            reprTitle: 'Zatikiak Irudikatu',
+            reprIntro: 'Zatiki batek oso baten zati berdinesgarriak adierazten ditu. <strong>Izendatzaileak</strong> osoa zenbat zatitan banatzen den esaten digu, eta <strong>zenbakitzaileak</strong> zenbat zati hartzen ditugun.',
+            reprBuilderTitle: 'Probatzaile Interaktiboa',
+            lblNum: 'Zenbakitzailea:',
+            lblDen: 'Izendatzailea:',
+            reprQuizTitle: 'Saiatu zaitez:',
+            reprQuizDesc: 'Zein zatiki ordezkatzen du ondorengo irudiak?',
+
+            sumTitle: 'Zatikien Batuketa',
+            sumIntro: 'Zatikiak gehitzeko bi egoera ezberdinekin egin dezakegu topo. Begiratu ondo izendatzaileei!',
+            sumStep1Title: '1. Izendatzaile bera badute:',
+            sumStep1Desc: 'Zenbakitzaileak batu egiten dira eta izendatzailea berdin-berdin uzten da.',
+            sumStep2Title: '2. Izendatzaile ezberdina badute:',
+            sumStep2Desc: 'Lehenik, zatikiak izendatzaile kideko bihurtu behar ditugu, horretarako izendatzaileen <strong>m.k.t. (multiplo komun txikiena)</strong> kalkulatuz. Ondoren, zenbakitzaile berriak batuko ditugu.',
+            sumMcmText: 'm.k.t.(4, 3) = 12',
+            sumQuizTitle: 'Saiatu zaitez:',
+            sumQuizDesc: 'Kontuz! Izendatzaileak ezberdinak dira. Kalkulatu lehenik <strong>m.k.t.</strong> zatiki kidekoak lortzeko:',
+            
+            resTitle: 'Zatikien Kenketa',
+            resIntro: 'Kenketak batuketaren pauso berdinak jarraitzen ditu, baina izendatzaileak ezberdinak badira, <strong>m.k.t.</strong> bilatuko dugu lehenik.',
+            resStepTitle: 'Izendatzaile ezberdinak dituzten kenketa adibidea:',
+            resStepDesc: 'Izendatzaileen multiplo komun txikiena bilatuko dugu zatiki kidekoak lortzeko, eta gero zenbakitzaile berriak kenduko ditugu.',
+            resMcmText: 'm.k.t.(4, 6) = 12',
+            resQuizTitle: 'Saiatu zaitez:',
+            resQuizDesc: 'Kalkulatu izendatzaileen <strong>m.k.t.</strong> eta ebatzi ondorengo kenketa:',
+            
+            mulTitle: 'Zatikien Biderketa',
+            mulIntro: 'Zatikiak biderkatzeko ez du axola izendatzaileak berdinak ala ezberdinak diren. Beti zuzenean biderkatzen dira (lerroan).',
+            mulStepTitle: 'Zuzenean biderkatu (Lerroan):',
+            mulStepDesc: 'Zenbakitzailea bider zenbakitzailea egiten da, eta izendatzailea bider izendatzailea.',
+            mulQuizTitle: 'Saiatu zaitez:',
+            mulQuizDesc: 'Kalkulatu bi zatiki hauen arteko biderketa:',
+
+            divTitle: 'Zatikien Zatiketa',
+            divIntro: 'Bi zatiki zatitzea, lehenengo zatikia bigarrenaren <strong>alderantzizko zatikiarekin (inbertsoarekin) biderkatzea</strong> da. Eragiketa biderketa bihurtzen da!',
+            divStepTitle: 'Alderantzizko zatikiarekin biderkatu:',
+            divStepP1: '1. Zatiketa ikurra <span style="font-weight: bold; color: var(--primary);">(:)</span> biderketa ikur <span style="font-weight: bold; color: var(--primary);">&middot;</span> bihurtzen dugu.',
+            divStepP2: '2. Bigarren zatikiari itzulia ematen diogu (zenbakitzailea behera doa eta izendatzailea gora).',
+            divStepP3: '3. Lerroan biderkatzen dugu, beti bezala.',
+            divExampleLbl: 'Adibidea:',
+            divInvLbl: '(Alderantzizkatu)',
+            divQuizTitle: 'Saiatu zaitez:',
+            divQuizDesc: 'Ebatzi zatiketa hau, biderketa inbertso bihurtuz:',
+
+            btnCheck: 'Egiaztatu',
+            btnRand: 'Aldatu zenbakiak',
+            placeholderNum: 'Zenb',
+            placeholderDen: 'Izen',
+            
+            emptyError: 'Mesedez, bete zenbakitzailea eta izendatzailea egiaztatu aurretik.',
+            correctFeedback: (eq) => `¡Oso ondo! Emaitza zuzena da. Lortu duzu! (Zatiki kideko zuzena: ${eq})`,
+            incorrectFeedback: (eq) => `Saiatu berriro. Gogoratu araua eta m.k.t-a ondo kalkulatu duzula ziurtatu. (Ustezko emaitza: ${eq})`,
+            
+            footer: '&copy; 2026 Matematika Baliabideak - DBH 1'
+        },
+        es: {
+            disclaimer: 'Aplicación creada por a.arriba@irakasle.ehu.eus con la ayuda de una IA para generar el código (última revisión el 16 de octubre de 2026). Esta herramienta puede tener fallos, así que todas las sugerencias o correcciones se atenderán por dicho correo electrónico.',
+            langBtn: '🌐 Euskara',
+            appTitle: 'Fracciones: Operaciones y Representación',
+            appSubtitle: 'Representación, suma, resta, multiplicación y división - 1º ESO',
+            tabRepr: 'Representación',
+            tabSum: 'Suma',
+            tabRes: 'Resta',
+            tabMul: 'Multiplicación',
+            tabDiv: 'División',
+            
+            reprTitle: 'Representar Fracciones',
+            reprIntro: 'Una fracción representa partes iguales de un todo. El <strong>denominador</strong> nos indica en cuántas partes se divide la unidad, y el <strong>numerador</strong> cuántas partes tomamos.',
+            reprBuilderTitle: 'Probador Interactivo',
+            lblNum: 'Numerador:',
+            lblDen: 'Denominador:',
+            reprQuizTitle: 'Inténtalo tú mismo:',
+            reprQuizDesc: '¿Qué fracción representa la siguiente figura?',
+
+            sumTitle: 'Suma de Fracciones',
+            sumIntro: 'Al sumar fracciones nos podemos encontrar dos situaciones distintas. ¡Fíjate bien en los denominadores!',
+            sumStep1Title: '1. Si tienen el mismo denominador:',
+            sumStep1Desc: 'Se suman los numeradores y se mantiene el mismo denominador.',
+            sumStep2Title: '2. Si tienen distinto denominador:',
+            sumStep2Desc: 'Primero debemos transformar las fracciones a común denominador calculando el <strong>m.c.m. (mínimo común múltiplo)</strong>. Después sumamos los nuevos numeradores.',
+            sumMcmText: 'm.c.m.(4, 3) = 12',
+            sumQuizTitle: 'Inténtalo tú mismo:',
+            sumQuizDesc: '¡Atención! Los denominadores son distintos. Calcula primero el <strong>m.c.m.</strong> para obtener fracciones equivalentes:',
+            
+            resTitle: 'Resta de Fracciones',
+            resIntro: 'La resta sigue los mismos pasos que la suma, pero si los denominadores son distintos, buscaremos el <strong>m.c.m.</strong> en primer lugar.',
+            resStepTitle: 'Ejemplo de resta con distinto denominador:',
+            resStepDesc: 'Buscamos el mínimo común múltiplo de los denominadores para obtener fracciones equivalentes y luego restamos los nuevos numeradores.',
+            resMcmText: 'm.c.m.(4, 6) = 12',
+            resQuizTitle: 'Inténtalo tú mismo:',
+            resQuizDesc: 'Calcula el <strong>m.c.m.</strong> de los denominadores y resuelve la siguiente resta:',
+            
+            mulTitle: 'Multiplicación de Fracciones',
+            mulIntro: 'Para multiplicar fracciones no importa si los denominadores son iguales o distintos. Siempre se multiplican directamente (en línea).',
+            mulStepTitle: 'Multiplicar directamente (en línea):',
+            mulStepDesc: 'Se multiplica numerador por numerador y denominador por denominador.',
+            mulQuizTitle: 'Inténtalo tú mismo:',
+            mulQuizDesc: 'Calcula la multiplicación entre estas dos fracciones:',
+
+            divTitle: 'División de Fracciones',
+            divIntro: 'Dividir dos fracciones equivale a <strong>multiplicar la primera por la inversa de la segunda</strong>. ¡La operación se convierte en multiplicación!',
+            divStepTitle: 'Multiplicar por la fracción inversa:',
+            divStepP1: '1. Cambiamos el signo de división <span style="font-weight: bold; color: var(--primary);">(:)</span> por el de multiplicación <span style="font-weight: bold; color: var(--primary);">&middot;</span>.',
+            divStepP2: '2. Le damos la vuelta a la segunda fracción (el numerador pasa abajo y el denominador arriba).',
+            divStepP3: '3. Multiplicamos en línea, como de costumbre.',
+            divExampleLbl: 'Ejemplo:',
+            divInvLbl: '(Invertir)',
+            divQuizTitle: 'Inténtalo tú mismo:',
+            divQuizDesc: 'Resuelve esta división convirtiéndola en multiplicación por la inversa:',
+
+            btnCheck: 'Comprobar',
+            btnRand: 'Cambiar números',
+            placeholderNum: 'Num',
+            placeholderDen: 'Den',
+            
+            emptyError: 'Por favor, completa el numerador y el denominador antes de comprobar.',
+            correctFeedback: (eq) => `¡Muy bien! El resultado es correcto. ¡Lo has logrado! (Fracción equivalente: ${eq})`,
+            incorrectFeedback: (eq) => `Inténtalo de nuevo. Recuerda la regla y asegúrate de calcular bien el m.c.m. (Resultado esperado: ${eq})`,
+            
+            footer: '&copy; 2026 Recursos de Matemáticas - 1º ESO'
+        }
+    };
+
+    let currentSolutions = {
+        repr: { num: 3, den: 5 },
+        sum: { num: 11, den: 12 },
+        res: { num: 7, den: 12 },
+        mul: { num: 3, den: 20 },
+        div: { num: 5, den: 6 }
+    };
+
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function lcm(a, b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'eu' ? 'es' : 'eu';
+        const t = translations[currentLang];
+
+        document.documentElement.lang = currentLang;
+        document.getElementById('disclaimer-text').innerText = t.disclaimer;
+        document.getElementById('lang-btn').innerText = t.langBtn;
+        document.getElementById('app-title').innerText = t.appTitle;
+        document.getElementById('app-subtitle').innerText = t.appSubtitle;
+        
+        document.getElementById('tab-repr-btn').innerText = t.tabRepr;
+        document.getElementById('tab-sum-btn').innerText = t.tabSum;
+        document.getElementById('tab-res-btn').innerText = t.tabRes;
+        document.getElementById('tab-mul-btn').innerText = t.tabMul;
+        document.getElementById('tab-div-btn').innerText = t.tabDiv;
+
+        // Representación
+        document.getElementById('repr-title').innerText = t.reprTitle;
+        document.getElementById('repr-intro').innerHTML = t.reprIntro;
+        document.getElementById('repr-builder-title').innerText = t.reprBuilderTitle;
+        document.getElementById('lbl-num').innerText = t.lblNum;
+        document.getElementById('lbl-den').innerText = t.lblDen;
+        document.getElementById('repr-quiz-title').innerText = t.reprQuizTitle;
+        document.getElementById('repr-quiz-desc').innerText = t.reprQuizDesc;
+        document.getElementById('btn-repr-check').innerText = t.btnCheck;
+        document.getElementById('btn-repr-rand').innerText = t.btnRand;
+
+        // Suma
+        document.getElementById('sum-title').innerText = t.sumTitle;
+        document.getElementById('sum-intro').innerText = t.sumIntro;
+        document.getElementById('sum-step1-title').innerText = t.sumStep1Title;
+        document.getElementById('sum-step1-desc').innerText = t.sumStep1Desc;
+        document.getElementById('sum-step2-title').innerText = t.sumStep2Title;
+        document.getElementById('sum-step2-desc').innerHTML = t.sumStep2Desc;
+        document.getElementById('sum-mcm-text').innerText = t.sumMcmText;
+        document.getElementById('sum-quiz-title').innerText = t.sumQuizTitle;
+        document.getElementById('sum-quiz-desc').innerHTML = t.sumQuizDesc;
+        document.getElementById('btn-sum-check').innerText = t.btnCheck;
+        document.getElementById('btn-sum-rand').innerText = t.btnRand;
+
+        // Resta
+        document.getElementById('res-title').innerText = t.resTitle;
+        document.getElementById('res-intro').innerHTML = t.resIntro;
+        document.getElementById('res-step-title').innerText = t.resStepTitle;
+        document.getElementById('res-step-desc').innerText = t.resStepDesc;
+        document.getElementById('res-mcm-text').innerText = t.resMcmText;
+        document.getElementById('res-quiz-title').innerText = t.resQuizTitle;
+        document.getElementById('res-quiz-desc').innerHTML = t.resQuizDesc;
+        document.getElementById('btn-res-check').innerText = t.btnCheck;
+        document.getElementById('btn-res-rand').innerText = t.btnRand;
+
+        // Multiplicación
+        document.getElementById('mul-title').innerText = t.mulTitle;
+        document.getElementById('mul-intro').innerText = t.mulIntro;
+        document.getElementById('mul-step-title').innerText = t.mulStepTitle;
+        document.getElementById('mul-step-desc').innerText = t.mulStepDesc;
+        document.getElementById('mul-quiz-title').innerText = t.mulQuizTitle;
+        document.getElementById('mul-quiz-desc').innerText = t.mulQuizDesc;
+        document.getElementById('btn-mul-check').innerText = t.btnCheck;
+        document.getElementById('btn-mul-rand').innerText = t.btnRand;
+
+        // División
+        document.getElementById('div-title').innerText = t.divTitle;
+        document.getElementById('div-intro').innerHTML = t.divIntro;
+        document.getElementById('div-step-title').innerText = t.divStepTitle;
+        document.getElementById('div-step-p1').innerHTML = t.divStepP1;
+        document.getElementById('div-step-p2').innerText = t.divStepP2;
+        document.getElementById('div-step-p3').innerText = t.divStepP3;
+        document.getElementById('div-example-lbl').innerText = t.divExampleLbl;
+        document.getElementById('div-inv-lbl').innerText = t.divInvLbl;
+        document.getElementById('div-quiz-title').innerText = t.divQuizTitle;
+        document.getElementById('div-quiz-desc').innerText = t.divQuizDesc;
+        document.getElementById('btn-div-check').innerText = t.btnCheck;
+        document.getElementById('btn-div-rand').innerText = t.btnRand;
+
+        ['repr', 'sum', 'res', 'mul', 'div'].forEach(type => {
+            const numEl = document.getElementById(`${type}-num`);
+            const denEl = document.getElementById(`${type}-den`);
+            if (numEl) numEl.placeholder = t.placeholderNum;
+            if (denEl) denEl.placeholder = t.placeholderDen;
+            
+            const fb = document.getElementById(`${type}-feedback`);
+            if (fb) fb.style.display = 'none';
+        });
+
+        document.getElementById('footer-text').innerHTML = t.footer;
+    }
+
+    function openTab(evt, tabName) {
+        let tabcontent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        let tablinks = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    function drawRectFraction(num, den, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        let svg = `<svg width="140" height="140" viewBox="0 0 140 140">`;
+        
+        const rectHeight = 120 / den;
+        for (let i = 0; i < den; i++) {
+            const y = 10 + i * rectHeight;
+            const fill = i < num ? '#319795' : '#ffffff';
+            svg += `<rect x="10" y="${y}" width="120" height="${rectHeight}" fill="${fill}" stroke="#2d3748" stroke-width="2"/>`;
+        }
+        svg += `</svg>`;
+        container.innerHTML = svg;
+    }
+
+    function drawCircleFraction(num, den, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        let svg = `<svg width="140" height="140" viewBox="0 0 140 140">`;
+        const cx = 70, cy = 70, r = 60;
+
+        if (den === 1) {
+            const fill = num >= 1 ? '#2b6cb0' : '#ffffff';
+            svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="#2d3748" stroke-width="2"/>`;
+        } else {
+            const angleStep = (2 * Math.PI) / den;
+            for (let i = 0; i < den; i++) {
+                const startAngle = i * angleStep - Math.PI / 2;
+                const endAngle = (i + 1) * angleStep - Math.PI / 2;
+
+                const x1 = cx + r * Math.cos(startAngle);
+                const y1 = cy + r * Math.sin(startAngle);
+                const x2 = cx + r * Math.cos(endAngle);
+                const y2 = cy + r * Math.sin(endAngle);
+
+                const largeArc = angleStep > Math.PI ? 1 : 0;
+                const fill = i < num ? '#2b6cb0' : '#ffffff';
+
+                const pathData = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                svg += `<path d="${pathData}" fill="${fill}" stroke="#2d3748" stroke-width="2"/>`;
+            }
+        }
+
+        svg += `</svg>`;
+        container.innerHTML = svg;
+    }
+
+    function updateCustomRepresentation() {
+        let n = parseInt(document.getElementById('builder-num').value) || 1;
+        let d = parseInt(document.getElementById('builder-den').value) || 1;
+        
+        if (n > d) n = d;
+        
+        drawRectFraction(n, d, 'rect-shape-container');
+        drawCircleFraction(n, d, 'circle-shape-container');
+    }
+
+    function generateQuiz(type) {
+        document.getElementById(`${type}-num`).value = '';
+        document.getElementById(`${type}-den`).value = '';
+        let feedbackDiv = document.getElementById(`${type}-feedback`);
+        feedbackDiv.style.display = 'none';
+
+        const commonDens = [2, 3, 4, 5, 6, 8];
+        
+        let d1 = commonDens[Math.floor(Math.random() * commonDens.length)];
+        let d2 = commonDens[Math.floor(Math.random() * commonDens.length)];
+        
+        let n1 = Math.floor(Math.random() * (d1 - 1)) + 1;
+        let n2 = Math.floor(Math.random() * 4) + 1;
+
+        if (type === 'repr') {
+            currentSolutions.repr.num = n1;
+            currentSolutions.repr.den = d1;
+            if (Math.random() > 0.5) {
+                drawCircleFraction(n1, d1, 'quiz-shape-container');
+            } else {
+                drawRectFraction(n1, d1, 'quiz-shape-container');
+            }
+        }
+        else if (type === 'sum') {
+            while (d1 === d2) {
+                d2 = commonDens[Math.floor(Math.random() * commonDens.length)];
+            }
+            document.getElementById('q-sum-n1').innerText = n1;
+            document.getElementById('q-sum-d1').innerText = d1;
+            document.getElementById('q-sum-n2').innerText = n2;
+            document.getElementById('q-sum-d2').innerText = d2;
+
+            let commonDen = lcm(d1, d2);
+            let finalNum = (n1 * (commonDen / d1)) + (n2 * (commonDen / d2));
+            
+            currentSolutions.sum.num = finalNum;
+            currentSolutions.sum.den = commonDen;
+        } 
+        else if (type === 'res') {
+            while (d1 === d2) {
+                d2 = commonDens[Math.floor(Math.random() * commonDens.length)];
+            }
+            let commonDen = lcm(d1, d2);
+            let tempNum1 = n1 * (commonDen / d1);
+            let tempNum2 = n2 * (commonDen / d2);
+            
+            if (tempNum1 <= tempNum2) {
+                n1 = n2 + 2;
+                tempNum1 = n1 * (commonDen / d1);
+            }
+
+            document.getElementById('q-res-n1').innerText = n1;
+            document.getElementById('q-res-d1').innerText = d1;
+            document.getElementById('q-res-n2').innerText = n2;
+            document.getElementById('q-res-d2').innerText = d2;
+
+            currentSolutions.res.num = tempNum1 - tempNum2;
+            currentSolutions.res.den = commonDen;
+        } 
+        else if (type === 'mul') {
+            document.getElementById('q-mul-n1').innerText = n1;
+            document.getElementById('q-mul-d1').innerText = d1;
+            document.getElementById('q-mul-n2').innerText = n2;
+            document.getElementById('q-mul-d2').innerText = d2;
+            currentSolutions.mul.num = n1 * n2;
+            currentSolutions.mul.den = d1 * d2;
+        } 
+        else if (type === 'div') {
+            document.getElementById('q-div-n1').innerText = n1;
+            document.getElementById('q-div-d1').innerText = d1;
+            document.getElementById('q-div-n2').innerText = n2;
+            document.getElementById('q-div-d2').innerText = d2;
+            
+            currentSolutions.div.num = n1 * d2;
+            currentSolutions.div.den = d1 * n2;
+        }
+    }
+
+    function checkQuiz(type) {
+        let numInput = document.getElementById(`${type}-num`).value;
+        let denInput = document.getElementById(`${type}-den`).value;
+        let feedbackDiv = document.getElementById(`${type}-feedback`);
+        const t = translations[currentLang];
+
+        if (!numInput || !denInput) {
+            feedbackDiv.innerHTML = t.emptyError;
+            feedbackDiv.className = "feedback incorrect";
+            return;
+        }
+
+        let expectedNum = currentSolutions[type].num;
+        let expectedDen = currentSolutions[type].den;
+
+        let userGcd = gcd(parseInt(numInput), parseInt(denInput));
+        let expectedGcd = gcd(expectedNum, expectedDen);
+
+        let userReducedNum = numInput / userGcd;
+        let userReducedDen = denInput / userGcd;
+        let expectedReducedNum = expectedNum / expectedGcd;
+        let expectedReducedDen = expectedDen / expectedGcd;
+
+        if ((numInput == expectedNum && denInput == expectedDen) || 
+            (userReducedNum === expectedReducedNum && userReducedDen === expectedReducedDen)) {
+            feedbackDiv.innerHTML = t.correctFeedback(`${expectedNum}/${expectedDen}`);
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = t.incorrectFeedback(`${expectedNum}/${expectedDen}`);
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    window.onload = function() {
+        updateCustomRepresentation();
+        generateQuiz('repr');
+    };
+</script>
+
+</body>
+</html>
